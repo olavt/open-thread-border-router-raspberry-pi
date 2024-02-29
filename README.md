@@ -138,6 +138,94 @@ When running in Docker container
 $ docker exec -it <container_id> sh -c "sudo ot-ctl dataset active -x"
 ```
 
+## Run the OpenThread Border Router software on a Raspberry Pi using the Docker image (not working)
+
+### Install Docker
+
+Instructions are copied from:
+
+https://docs.docker.com/engine/install/debian/
+
+Run the following command to uninstall all conflicting packages:
+
+```
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+
+Install using the apt repository:
+
+1. Set up Docker's apt repository:
+```
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+
+2. Install the Docker packages
+
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Create the docker group and add your user:
+
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+You may need to reboot for the group membership to take effect.
+
+### Run OpenThread Border Router on the Raspberry Pi (Docker)
+
+Connect the Silicon Labs Dev Kit to an USB-port on the Raspberry Pi. A new port should appear under /dev. Typically named ttyACM0.
+
+Remember to load the kernel modules for iptables:
+
+```
+$ sudo modprobe ip6table_filter
+```
+
+Make it permanent
+
+```
+sudo nano /etc/modules-load.d/modules.conf
+```
+
+Add a line with "ip6table_filter" and save.
+
+Check if the "ip6table_filter" module is loaded:
+
+```
+lsmod | grep ip6table_filter
+```
+
+Run the following Docker command:
+
+```
+$ docker run --sysctl "net.ipv6.conf.all.disable_ipv6=0 net.ipv4.conf.all.forwarding=1 net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -it --volume /dev/ttyACM0:/dev/ttyACM0 --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/ttyACM0
+```
+
+The OpenThread Border Router should now be running.
+
+## Form a Thread network
+
+Open the IP-address of your Raspberry Pi on port 8080 to open the OpenThread Border Router Web Application.
+
+Click on Form in the menu and then click on the "Form" button.
+
+![Form Thread Networks](./images/form-thread-networks.png)
+
 ## Backup
 
 OpenThread Border Router stores it's state by default in /var/lib/thread. This can be changed by setting the environment variable OT_POSIX_SETTINGS_PATH at build time.
