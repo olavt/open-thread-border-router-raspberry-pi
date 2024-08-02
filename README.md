@@ -236,6 +236,38 @@ NOTE! The settings filename for each RCP will be uniqueue. If you swap an RCP, y
 
 ## Network Troubleshooting
 
+https://openthread.io/reference/cli/commands
+
+Prints information in table format about all neighbors.
+
+```
+ sudo ot-ctl neighbor table
+```
+
+Prints link quality information about all neighbors.
+
+```
+ sudo ot-ctl neighbor linkquality
+```
+
+Prints a list of routers in a table format.
+
+```
+ sudo ot-ctl router table
+```
+
+Gets (or sets with the use of the optional txpower argument) the transmit power in dBm.
+
+```
+ sudo ot-ctl txpower
+```
+
+Gets the OpenThread version string.
+
+```
+ sudo ot-ctl version
+```
+
 avahi-browse is a command-line program that you can use to browse for all mDNS broadcasts on the network and to resolve the host name and IP address of the device performing the broadcasts.
 
 ```
