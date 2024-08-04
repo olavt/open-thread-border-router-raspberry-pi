@@ -238,10 +238,22 @@ NOTE! The settings filename for each RCP will be uniqueue. If you swap an RCP, y
 
 https://openthread.io/reference/cli/commands
 
+Discover network topology (list of routers and their connections). Parameters are optional and indicate additional items to discover.
+
+```
+ sudo ot-ctl meshdiag topology [ip6-addrs] [children]
+```
+
 Prints information in table format about all neighbors.
 
 ```
  sudo ot-ctl neighbor table
+```
+
+Prints the connection time and age of neighbors.
+
+```
+ sudo ot-ctl neighbor conntime
 ```
 
 Prints link quality information about all neighbors.
