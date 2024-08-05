@@ -280,6 +280,20 @@ Gets the OpenThread version string.
  sudo ot-ctl version
 ```
 
+Gets the Thread protocol version.
+
+```
+ sudo ot-ctl thread version
+```
+
+You can also use avahi-browse command to display the Thread version number:
+
+```
+avahi-browse -r -t _meshcop._udp
+```
+
+Look for this kind of string in the output "tv=1.3.0"
+
 avahi-browse is a command-line program that you can use to browse for all mDNS broadcasts on the network and to resolve the host name and IP address of the device performing the broadcasts.
 
 ```
