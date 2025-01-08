@@ -268,6 +268,12 @@ Prints a list of routers in a table format.
  sudo ot-ctl router table
 ```
 
+Discover network topology (list of routers and their connections). Parameters are optional and indicate additional items to discover. Can be added in any order.
+
+```
+ sudo ot-ctl meshdiag topology
+```
+
 Gets (or sets with the use of the optional txpower argument) the transmit power in dBm.
 
 ```
